@@ -1,0 +1,74 @@
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  gap: 16px;
+}
+
+.topBar {
+  width: 100%;
+  max-width: 640px;
+}
+
+.exitButton {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.empty {
+  color: var(--text);
+}
+
+.table {
+  width: 100%;
+  max-width: 640px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.table th {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.table td {
+  color: var(--text-h);
+}
+
+.barTrack {
+  display: inline-block;
+  width: 80px;
+  height: 8px;
+  background: var(--code-bg);
+  border-radius: 999px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+.resetButton {
+  margin-top: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}

@@ -1,0 +1,165 @@
+.quiz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  gap: 24px;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 480px;
+}
+
+.exitButton {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.score {
+  color: var(--text-h);
+  font-weight: 500;
+}
+
+.card {
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.formLabel {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.prompt {
+  font-size: 40px;
+  color: var(--text-h);
+  margin: 12px 0 4px;
+}
+
+.meaning {
+  color: var(--text);
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.typedForm {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.typedInput {
+  flex: 1;
+  padding: 12px 14px;
+  font-size: 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.submitButton {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.choiceButton,
+.choiceCorrect,
+.choiceIncorrect {
+  padding: 14px 10px;
+  font-size: 17px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.choiceCorrect {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.choiceIncorrect {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.choiceButton:disabled,
+.choiceCorrect:disabled,
+.choiceIncorrect:disabled {
+  cursor: default;
+}
+
+.feedbackCorrect,
+.feedbackIncorrect {
+  margin-top: 16px;
+  width: 100%;
+  text-align: center;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.feedbackCorrect {
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.feedbackIncorrect {
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.yourAnswer {
+  color: var(--text);
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+.answerReveal {
+  font-size: 20px;
+  color: var(--text-h);
+  margin: 8px 0;
+}
+
+.nextButton {
+  margin-top: 8px;
+  padding: 10px 24px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
