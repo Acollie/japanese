@@ -9,7 +9,6 @@ import { generateDistractors, pickQuestion } from './QuestionGenerator';
 import type { Question } from './QuestionGenerator';
 import { MultipleChoiceOptions } from './MultipleChoiceOptions';
 import { TypedAnswerInput } from './TypedAnswerInput';
-import styles from './QuizView.module.css';
 
 interface QuizViewProps {
   mode: QuizMode;
@@ -68,22 +67,22 @@ export function QuizView({ mode, forms, onExit }: QuizViewProps) {
   }
 
   return (
-    <div className={styles.quiz}>
-      <div className={styles.topBar}>
-        <button type="button" className={styles.exitButton} onClick={onExit}>
+    <div className="flex flex-col items-center gap-6 p-6">
+      <div className="flex w-full max-w-[480px] justify-between">
+        <button type="button" className="text-sm text-neutral-500 dark:text-neutral-400" onClick={onExit}>
           ← Home
         </button>
-        <span className={styles.score}>
+        <span className="font-medium text-neutral-950 dark:text-neutral-100">
           Score: {score.correct} / {score.attempts}
         </span>
       </div>
 
-      <div className={styles.card}>
-        <p className={styles.formLabel}>{promptLabel}</p>
-        <p className={styles.prompt}>
+      <div className="flex w-full max-w-[480px] flex-col items-center gap-2 rounded-xl border border-neutral-200 p-8 dark:border-neutral-800">
+        <p className="text-sm font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">{promptLabel}</p>
+        <p className="my-3 text-4xl text-neutral-950 dark:text-neutral-100">
           {question.verb.kanji === question.verb.kana ? question.verb.kana : `${question.verb.kanji} (${question.verb.kana})`}
         </p>
-        <p className={styles.meaning}>{question.verb.meaning}</p>
+        <p className="mb-5 italic text-neutral-500 dark:text-neutral-400">{question.verb.meaning}</p>
 
         {mode === 'typed' ? (
           <TypedAnswerInput disabled={!!feedback} onSubmit={handleTypedSubmit} />
@@ -98,15 +97,26 @@ export function QuizView({ mode, forms, onExit }: QuizViewProps) {
         )}
 
         {feedback && (
-          <div className={feedback.wasCorrect ? styles.feedbackCorrect : styles.feedbackIncorrect}>
-            <p>{feedback.wasCorrect ? 'Correct!' : 'Not quite.'}</p>
-            {!feedback.wasCorrect && <p className={styles.yourAnswer}>You answered: {feedback.yourAnswer}</p>}
-            <p className={styles.answerReveal}>
-              Answer: {feedback.correct.kanji === feedback.correct.kana
+          <div
+            className={`mt-4 w-full rounded-lg p-4 text-center ${
+              feedback.wasCorrect ? 'bg-green-500/10' : 'bg-red-500/10'
+            }`}
+          >
+            <p className="text-neutral-500 dark:text-neutral-400">{feedback.wasCorrect ? 'Correct!' : 'Not quite.'}</p>
+            {!feedback.wasCorrect && (
+              <p className="mt-2 text-[15px] text-neutral-500 dark:text-neutral-400">You answered: {feedback.yourAnswer}</p>
+            )}
+            <p className="my-2 text-xl text-neutral-950 dark:text-neutral-100">
+              Answer:{' '}
+              {feedback.correct.kanji === feedback.correct.kana
                 ? feedback.correct.kana
                 : `${feedback.correct.kanji} (${feedback.correct.kana})`}
             </p>
-            <button type="button" className={styles.nextButton} onClick={nextQuestion}>
+            <button
+              type="button"
+              className="mt-2 rounded-lg bg-purple-600 px-6 py-2.5 text-[15px] text-white"
+              onClick={nextQuestion}
+            >
               Next question →
             </button>
           </div>

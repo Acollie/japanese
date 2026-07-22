@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import styles from './QuizView.module.css';
 
 interface TypedAnswerInputProps {
   disabled: boolean;
@@ -17,9 +16,9 @@ export function TypedAnswerInput({ disabled, onSubmit }: TypedAnswerInputProps) 
   }
 
   return (
-    <form className={styles.typedForm} onSubmit={handleSubmit}>
+    <form className="flex w-full gap-2" onSubmit={handleSubmit}>
       <input
-        className={styles.typedInput}
+        className="flex-1 rounded-lg border border-neutral-200 bg-white px-3.5 py-3 text-lg text-neutral-950 disabled:opacity-60 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100"
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -30,7 +29,11 @@ export function TypedAnswerInput({ disabled, onSubmit }: TypedAnswerInputProps) 
         autoCapitalize="off"
         spellCheck={false}
       />
-      <button type="submit" className={styles.submitButton} disabled={disabled || !value.trim()}>
+      <button
+        type="submit"
+        className="rounded-lg bg-purple-600 px-5 py-3 text-base text-white disabled:cursor-not-allowed disabled:opacity-50"
+        disabled={disabled || !value.trim()}
+      >
         Check
       </button>
     </form>

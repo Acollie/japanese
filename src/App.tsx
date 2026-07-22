@@ -17,22 +17,22 @@ function App() {
     setSelectedForms((prev) => (prev.includes(form) ? prev.filter((f) => f !== form) : [...prev, form]));
   }
 
-  if (view === 'quiz') {
-    return <QuizView mode={mode} forms={selectedForms} onExit={() => setView('home')} />;
-  }
-  if (view === 'stats') {
-    return <StatsView onExit={() => setView('home')} />;
-  }
   return (
-    <HomeView
-      mode={mode}
-      onModeChange={setMode}
-      selectedForms={selectedForms}
-      onToggleForm={toggleForm}
-      onSelectAllForms={() => setSelectedForms(QUIZ_FORMS)}
-      onStart={() => setView('quiz')}
-      onViewStats={() => setView('stats')}
-    />
+    <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col bg-white text-neutral-500 dark:bg-neutral-900 dark:text-neutral-400">
+      {view === 'quiz' && <QuizView mode={mode} forms={selectedForms} onExit={() => setView('home')} />}
+      {view === 'stats' && <StatsView onExit={() => setView('home')} />}
+      {view === 'home' && (
+        <HomeView
+          mode={mode}
+          onModeChange={setMode}
+          selectedForms={selectedForms}
+          onToggleForm={toggleForm}
+          onSelectAllForms={() => setSelectedForms(QUIZ_FORMS)}
+          onStart={() => setView('quiz')}
+          onViewStats={() => setView('stats')}
+        />
+      )}
+    </div>
   );
 }
 
