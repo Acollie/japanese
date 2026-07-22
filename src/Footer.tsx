@@ -21,14 +21,20 @@ function MailIcon() {
 export function Footer() {
   return (
     <footer className="mt-auto flex items-center justify-center gap-4 border-t border-neutral-200 px-6 py-5 dark:border-neutral-800">
-      <a href="https://github.com/Acollie" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+      <a href="https://github.com/Acollie" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
         <img
           src="https://github.com/Acollie.png"
           alt=""
           className="h-7 w-7 rounded-full opacity-70 transition-opacity hover:opacity-100"
         />
       </a>
-      <a href="https://www.alexcollie.com" target="_blank" rel="noopener noreferrer" aria-label="Website" title="Website">
+      <a
+        href="https://www.alexcollie.com?utm_source=japanese-quiz&utm_medium=footer"
+        target="_blank"
+        rel="noopener"
+        aria-label="Website"
+        title="Website"
+      >
         <GlobeIcon />
       </a>
       <a href="mailto:Alex@alexcollie.com" aria-label="Email" title="Email">
