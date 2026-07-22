@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { QUIZ_FORMS } from './conjugation/types';
 import type { FormId } from './conjugation/types';
+import { Footer } from './Footer';
 import { HomeView } from './home/HomeView';
 import type { QuizMode } from './home/HomeView';
 import { QuizView } from './quiz/QuizView';
@@ -32,6 +33,7 @@ function App() {
           onViewStats={() => setView('stats')}
         />
       )}
+      <Footer />
     </div>
   );
 }
