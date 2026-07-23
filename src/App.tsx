@@ -19,21 +19,23 @@ function App() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col bg-white text-neutral-500 dark:bg-neutral-900 dark:text-neutral-400">
-      {view === 'quiz' && <QuizView mode={mode} forms={selectedForms} onExit={() => setView('home')} />}
-      {view === 'stats' && <StatsView onExit={() => setView('home')} />}
-      {view === 'home' && (
-        <HomeView
-          mode={mode}
-          onModeChange={setMode}
-          selectedForms={selectedForms}
-          onToggleForm={toggleForm}
-          onSelectAllForms={() => setSelectedForms(QUIZ_FORMS)}
-          onStart={() => setView('quiz')}
-          onViewStats={() => setView('stats')}
-        />
-      )}
-      <Footer />
+    <div className="flex min-h-screen w-full justify-center bg-neutral-50 py-0 sm:py-10 dark:bg-neutral-950">
+      <div className="flex w-full max-w-2xl flex-col bg-white text-neutral-500 sm:rounded-2xl sm:border sm:border-neutral-200 sm:shadow-sm dark:bg-neutral-900 dark:text-neutral-400 sm:dark:border-neutral-800">
+        {view === 'quiz' && <QuizView mode={mode} forms={selectedForms} onExit={() => setView('home')} />}
+        {view === 'stats' && <StatsView onExit={() => setView('home')} />}
+        {view === 'home' && (
+          <HomeView
+            mode={mode}
+            onModeChange={setMode}
+            selectedForms={selectedForms}
+            onToggleForm={toggleForm}
+            onSelectAllForms={() => setSelectedForms(QUIZ_FORMS)}
+            onStart={() => setView('quiz')}
+            onViewStats={() => setView('stats')}
+          />
+        )}
+        <Footer />
+      </div>
     </div>
   );
 }
