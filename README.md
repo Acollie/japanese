@@ -1,9 +1,12 @@
 # 日本語動詞練習 — N5/N4 Verb Conjugation Practice
 
-A static quiz site for practicing Japanese verb conjugation at the N5/N4 level: masu-form, nai-form, te-form, and ta-form, across ichidan (ru-verbs), godan (u-verbs), and irregular verbs (する, 来る).
+**Live site: https://acollie.github.io/japanese/**
+
+A static quiz site for practicing Japanese verb conjugation at the N5/N4 level, across ichidan (ru-verbs), godan (u-verbs), and irregular verbs (する, 来る).
 
 ## Features
 
+- 9 conjugation forms: masu, masen, mashita, masendeshita, nai, nakatta, te, ta, teiru — selectable via a forms grid on the home page
 - Type-the-answer or multiple-choice quiz modes (romaji or kana accepted for typed answers)
 - ~47 curated N5/N4 verbs, including the classic godan verbs that look like ichidan (帰る, 入る, 知る, 切る, 走る, 要る)
 - Progress tracking (accuracy per verb-type × form) saved to localStorage

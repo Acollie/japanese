@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { incrementAndGetHits } from './hitCounter';
+
 const ICON_CLASS = 'h-5 w-5 text-neutral-400 hover:text-purple-600 dark:text-neutral-500 dark:hover:text-purple-400';
 
 function GlobeIcon() {
@@ -19,27 +22,38 @@ function MailIcon() {
 }
 
 export function Footer() {
+  const [hits, setHits] = useState<number | null>(null);
+
+  useEffect(() => {
+    incrementAndGetHits().then(setHits);
+  }, []);
+
   return (
-    <footer className="mt-auto flex items-center justify-center gap-4 border-t border-neutral-200 px-6 py-5 dark:border-neutral-800">
-      <a href="https://github.com/Acollie" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
-        <img
-          src="https://github.com/Acollie.png"
-          alt=""
-          className="h-7 w-7 rounded-full opacity-70 transition-opacity hover:opacity-100"
-        />
-      </a>
-      <a
-        href="https://www.alexcollie.com?utm_source=japanese-quiz&utm_medium=footer"
-        target="_blank"
-        rel="noopener"
-        aria-label="Website"
-        title="Website"
-      >
-        <GlobeIcon />
-      </a>
-      <a href="mailto:Alex@alexcollie.com" aria-label="Email" title="Email">
-        <MailIcon />
-      </a>
+    <footer className="mt-auto flex flex-col items-center justify-center gap-2 border-t border-neutral-200 px-6 py-5 dark:border-neutral-800">
+      <div className="flex items-center justify-center gap-4">
+        <a href="https://github.com/Acollie" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+          <img
+            src="https://github.com/Acollie.png"
+            alt=""
+            className="h-7 w-7 rounded-full opacity-70 transition-opacity hover:opacity-100"
+          />
+        </a>
+        <a
+          href="https://www.alexcollie.com?utm_source=japanese-quiz&utm_medium=footer"
+          target="_blank"
+          rel="noopener"
+          aria-label="Website"
+          title="Website"
+        >
+          <GlobeIcon />
+        </a>
+        <a href="mailto:Alex@alexcollie.com" aria-label="Email" title="Email">
+          <MailIcon />
+        </a>
+      </div>
+      {hits !== null && (
+        <span className="text-xs text-neutral-400 dark:text-neutral-500">{hits.toLocaleString()} visits</span>
+      )}
     </footer>
   );
 }
