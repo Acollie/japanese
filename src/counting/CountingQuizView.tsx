@@ -1,16 +1,13 @@
 import { useMemo, useState } from 'react';
-import { counterObjects } from '../data/counterObjects';
-import { objectCounters } from '../data/counters';
 import type { QuizMode } from '../home/HomeView';
 import { checkAnswer, toHiraganaAnswer } from '../quiz/kanaUtils';
 import { MultipleChoiceOptions } from '../quiz/MultipleChoiceOptions';
 import { TypedAnswerInput } from '../quiz/TypedAnswerInput';
-import { acceptedCounters, buildPools, generateDistractors, pickQuestion } from './QuestionGenerator';
-import type { Question } from './QuestionGenerator';
+import { buildCounterPool, countableCounters, generateDistractors, pickQuestion } from './QuestionGenerator';
+import type { CountingQuestion } from './QuestionGenerator';
 import { recordAnswer } from './progressStore';
-import type { CounterEntry } from './types';
 
-interface CountersQuizViewProps {
+interface CountingQuizViewProps {
   mode: QuizMode;
   counterIds: string[];
   onExit: () => void;
@@ -18,38 +15,35 @@ interface CountersQuizViewProps {
 
 interface Feedback {
   wasCorrect: boolean;
-  correct: CounterEntry;
+  answer: string;
+  alsoAccepted: string[];
   yourAnswer: string;
-  /** Copied off the answered object so it survives the move to the next question. */
-  note?: string;
-  /** Counters beyond the primary answer that also graded as correct. */
-  alsoAccepted: CounterEntry[];
 }
 
 function shuffle<T>(items: T[]): T[] {
   return [...items].sort(() => Math.random() - 0.5);
 }
 
-function buildChoices(question: Question, counterPool: CounterEntry[]): CounterEntry[] {
-  const distractors = generateDistractors(counterPool, question, 3, Math.random, objectCounters);
-  return shuffle([question.answer, ...distractors]);
+/** MultipleChoiceOptions renders `kanji` only when it differs from `kana`; readings are kana-only. */
+function asOption(reading: string) {
+  return { kanji: reading, kana: reading };
 }
 
-export function CountersQuizView({ mode, counterIds, onExit }: CountersQuizViewProps) {
-  const { counterPool, objectPool } = useMemo(
-    () => buildPools(objectCounters, counterObjects, counterIds),
-    [counterIds],
-  );
+export function CountingQuizView({ mode, counterIds, onExit }: CountingQuizViewProps) {
+  const counterPool = useMemo(() => buildCounterPool(counterIds), [counterIds]);
 
-  const [question, setQuestion] = useState<Question>(() => pickQuestion(objectPool, counterPool));
-  const accepted = useMemo(() => acceptedCounters(question, objectCounters), [question]);
-  const [choices, setChoices] = useState<CounterEntry[]>(() => buildChoices(question, counterPool));
+  const [question, setQuestion] = useState<CountingQuestion>(() => pickQuestion(counterPool));
+  const [choices, setChoices] = useState<string[]>(() => buildChoices(question, counterPool));
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState({ correct: 0, attempts: 0 });
 
+  function buildChoices(q: CountingQuestion, pool: typeof counterPool): string[] {
+    return shuffle([q.answer, ...generateDistractors(pool, q, 3, Math.random, countableCounters)]);
+  }
+
   function nextQuestion() {
-    const next = pickQuestion(objectPool, counterPool);
+    const next = pickQuestion(counterPool);
     setQuestion(next);
     setChoices(buildChoices(next, counterPool));
     setFeedback(null);
@@ -57,32 +51,22 @@ export function CountersQuizView({ mode, counterIds, onExit }: CountersQuizViewP
   }
 
   function submitAnswer(wasCorrect: boolean, yourAnswer: string) {
-    recordAnswer(question.object, question.answer, wasCorrect);
+    recordAnswer(question.counter.id, question.n, wasCorrect);
     setScore((s) => ({ correct: s.correct + (wasCorrect ? 1 : 0), attempts: s.attempts + 1 }));
-    setFeedback({
-      wasCorrect,
-      correct: question.answer,
-      yourAnswer,
-      note: question.object.note,
-      alsoAccepted: accepted.slice(1),
-    });
+    setFeedback({ wasCorrect, answer: question.answer, alsoAccepted: question.alsoAccepted, yourAnswer });
   }
 
   function handleTypedSubmit(value: string) {
+    const allowed = [question.answer, ...question.alsoAccepted];
     submitAnswer(
-      accepted.some((c) => checkAnswer(value, c)),
+      allowed.some((reading) => checkAnswer(value, asOption(reading))),
       toHiraganaAnswer(value),
     );
   }
 
   function handleChoiceSelect(kana: string) {
     setSelected(kana);
-    const chosen = choices.find((c) => c.kana === kana);
-    const display = chosen && chosen.kanji !== chosen.kana ? `${chosen.kanji} (${chosen.kana})` : kana;
-    submitAnswer(
-      accepted.some((c) => c.kana === kana),
-      display,
-    );
+    submitAnswer(kana === question.answer || question.alsoAccepted.includes(kana), kana);
   }
 
   return (
@@ -97,26 +81,23 @@ export function CountersQuizView({ mode, counterIds, onExit }: CountersQuizViewP
       </div>
 
       <div className="flex w-full max-w-[480px] flex-col items-center gap-2 rounded-xl border border-neutral-200 p-8 dark:border-neutral-800">
-        <p className="text-sm font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">Which counter?</p>
-        {/* Decorative: the kanji, kana and meaning below carry the question. */}
-        <p className="my-3 text-6xl" aria-hidden="true">
-          {question.object.emoji}
+        <p className="text-sm font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">
+          How do you say it?
         </p>
-        <p className="mb-1 text-2xl text-neutral-950 dark:text-neutral-100">
-          {question.object.kanji === question.object.kana
-            ? question.object.kana
-            : `${question.object.kanji} (${question.object.kana})`}
+        <p className="my-3 text-6xl text-neutral-950 dark:text-neutral-100">
+          {question.n}
+          {question.counter.kanji}
         </p>
-        <p className="mb-5 italic text-neutral-500 dark:text-neutral-400">{question.object.meaning}</p>
+        <p className="mb-5 italic text-neutral-500 dark:text-neutral-400">{question.counter.usage}</p>
 
         {mode === 'typed' ? (
           <TypedAnswerInput disabled={!!feedback} onSubmit={handleTypedSubmit} />
         ) : (
           <MultipleChoiceOptions
-            options={choices}
+            options={choices.map(asOption)}
             disabled={!!feedback}
             selected={selected}
-            correctKana={question.answer.kana}
+            correctKana={question.answer}
             onSelect={handleChoiceSelect}
           />
         )}
@@ -132,17 +113,12 @@ export function CountersQuizView({ mode, counterIds, onExit }: CountersQuizViewP
               <p className="mt-2 text-[15px] text-neutral-500 dark:text-neutral-400">You answered: {feedback.yourAnswer}</p>
             )}
             <p className="my-2 text-xl text-neutral-950 dark:text-neutral-100">
-              Answer: {feedback.correct.kanji} ({feedback.correct.kana})
+              {question.n}
+              {question.counter.kanji} — {feedback.answer}
             </p>
-            <p className="mb-2 text-sm text-neutral-500 dark:text-neutral-400">{feedback.correct.usage}</p>
             {feedback.alsoAccepted.length > 0 && (
               <p className="mb-2 text-sm text-neutral-500 dark:text-neutral-400">
-                Also accepted: {feedback.alsoAccepted.map((c) => `${c.kanji} (${c.kana})`).join(', ')}
-              </p>
-            )}
-            {feedback.note && (
-              <p className="mx-auto mb-2 max-w-[38ch] text-[13px] leading-snug text-neutral-500 dark:text-neutral-400">
-                {feedback.note}
+                Also said: {feedback.alsoAccepted.join('、')}
               </p>
             )}
             <button

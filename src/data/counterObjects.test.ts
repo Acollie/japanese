@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { counterObjects } from './counterObjects';
-import { counters } from './counters';
+import { objectCounters as counters } from './counters';
 
 describe('counter dataset', () => {
   it('has no duplicate ids', () => {

@@ -19,4 +19,14 @@ export const counters: CounterEntry[] = [
   { id: 'hai', kanji: '杯', kana: 'はい', usage: 'cupfuls / glassfuls of liquid' },
   { id: 'ken', kanji: '軒', kana: 'けん', usage: 'houses and buildings' },
   { id: 'soku', kanji: '足', kana: 'そく', usage: 'pairs of footwear' },
+  {
+    id: 'tsu',
+    kanji: 'つ',
+    kana: 'つ',
+    usage: 'general objects, native numbers (1–10)',
+    numericOnly: true,
+  },
 ];
+
+/** Counters that can answer "which counter does this object take". */
+export const objectCounters = counters.filter((c) => !c.numericOnly);

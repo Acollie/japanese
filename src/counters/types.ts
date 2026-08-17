@@ -4,6 +4,12 @@ export interface CounterEntry {
   kana: string;
   /** Short gloss of what the counter is used for, shown on the home page selector grid. */
   usage: string;
+  /**
+   * Counters that only make sense as a reading drill, not as an answer to "which
+   * counter does this object take". つ overlaps 個 on almost every small object, so
+   * offering it there would create questions with two defensible answers.
+   */
+  numericOnly?: boolean;
 }
 
 export interface CounterObjectEntry {

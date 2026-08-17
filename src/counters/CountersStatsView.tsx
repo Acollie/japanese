@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { counters } from '../data/counters';
+import { objectCounters } from '../data/counters';
 import { getStats, resetProgress } from './progressStore';
 
 interface CountersStatsViewProps {
@@ -9,11 +9,11 @@ interface CountersStatsViewProps {
 const CELL = 'border-b border-neutral-200 px-2 py-2.5 text-sm dark:border-neutral-800';
 
 export function CountersStatsView({ onExit }: CountersStatsViewProps) {
-  const [stats, setStats] = useState(() => getStats(counters));
+  const [stats, setStats] = useState(() => getStats(objectCounters));
 
   function handleReset() {
     resetProgress();
-    setStats(getStats(counters));
+    setStats(getStats(objectCounters));
   }
 
   return (

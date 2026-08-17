@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { counterObjects } from '../data/counterObjects';
-import { counters } from '../data/counters';
+import { objectCounters as counters } from '../data/counters';
 import { acceptedCounters, buildPools, generateDistractors, MIN_COUNTERS, pickQuestion } from './QuestionGenerator';
 
 // Deterministic seeded RNG for reproducible tests.
