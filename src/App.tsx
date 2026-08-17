@@ -29,6 +29,14 @@ function App() {
     setSelectedCounterIds((prev) => (prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]));
   }
 
+  function toggleAllForms() {
+    setSelectedForms((prev) => (prev.length === QUIZ_FORMS.length ? [] : QUIZ_FORMS));
+  }
+
+  function toggleAllCounters() {
+    setSelectedCounterIds((prev) => (prev.length === ALL_COUNTER_IDS.length ? [] : ALL_COUNTER_IDS));
+  }
+
   return (
     <div className="flex min-h-screen w-full justify-center bg-neutral-50 py-0 sm:py-10 dark:bg-neutral-950">
       <div className="flex w-full max-w-2xl flex-col bg-white text-neutral-500 sm:rounded-2xl sm:border sm:border-neutral-200 sm:shadow-sm dark:bg-neutral-900 dark:text-neutral-400 sm:dark:border-neutral-800">
@@ -46,10 +54,10 @@ function App() {
             onModeChange={setMode}
             selectedForms={selectedForms}
             onToggleForm={toggleForm}
-            onSelectAllForms={() => setSelectedForms(QUIZ_FORMS)}
+            onToggleAllForms={toggleAllForms}
             selectedCounterIds={selectedCounterIds}
             onToggleCounter={toggleCounter}
-            onSelectAllCounters={() => setSelectedCounterIds(ALL_COUNTER_IDS)}
+            onToggleAllCounters={toggleAllCounters}
             onStart={() => setView('quiz')}
             onViewStats={() => setView('stats')}
           />

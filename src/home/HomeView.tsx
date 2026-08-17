@@ -13,10 +13,10 @@ interface HomeViewProps {
   onModeChange: (mode: QuizMode) => void;
   selectedForms: FormId[];
   onToggleForm: (form: FormId) => void;
-  onSelectAllForms: () => void;
+  onToggleAllForms: () => void;
   selectedCounterIds: string[];
   onToggleCounter: (id: string) => void;
-  onSelectAllCounters: () => void;
+  onToggleAllCounters: () => void;
   onStart: () => void;
   onViewStats: () => void;
 }
@@ -28,13 +28,15 @@ export function HomeView({
   onModeChange,
   selectedForms,
   onToggleForm,
-  onSelectAllForms,
+  onToggleAllForms,
   selectedCounterIds,
   onToggleCounter,
-  onSelectAllCounters,
+  onToggleAllCounters,
   onStart,
   onViewStats,
 }: HomeViewProps) {
+  const allFormsSelected = selectedForms.length === QUIZ_FORMS.length;
+  const allCountersSelected = selectedCounterIds.length === counters.length;
   // Verbs need one form; counters need two, since a one-counter quiz has no wrong answer to offer.
   const cannotStart = domain === 'verbs' ? selectedForms.length === 0 : selectedCounterIds.length < MIN_COUNTERS;
 
@@ -101,8 +103,8 @@ export function HomeView({
         <div className="mt-2 w-full max-w-[480px]">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-[13px] uppercase tracking-wide text-neutral-500 dark:text-neutral-400">Forms to practice</span>
-            <button type="button" className="text-[13px] text-purple-600 underline dark:text-purple-400" onClick={onSelectAllForms}>
-              Select all
+            <button type="button" className="text-[13px] text-purple-600 underline dark:text-purple-400" onClick={onToggleAllForms}>
+              {allFormsSelected ? 'Unselect all' : 'Select all'}
             </button>
           </div>
           <div className="grid grid-cols-3 gap-2" role="group" aria-label="Forms to practice">
@@ -140,9 +142,9 @@ export function HomeView({
             <button
               type="button"
               className="text-[13px] text-purple-600 underline dark:text-purple-400"
-              onClick={onSelectAllCounters}
+              onClick={onToggleAllCounters}
             >
-              Select all
+              {allCountersSelected ? 'Unselect all' : 'Select all'}
             </button>
           </div>
           <div className="grid grid-cols-3 gap-2" role="group" aria-label="Counters to practice">
